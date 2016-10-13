@@ -1,0 +1,445 @@
+﻿Chapter 01
+
+Introduction to using Python
+
+Python 2.5.2 (r252:60911, May 15 2008, 17:59:19) 
+[GCC 4.3.1 20080501 (prerelease)] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+
+Chapter 02
+
+Introduction to Software Design
+hello_world.py
+
+"""
+Problem: Get the computer to output a message.
+Target Users: Me
+Target System: GNU/Linux
+Interface: Command-line
+Functional Requirements: Print out a message.
+Other Requirements: User must be able to input some text.
+Testing: Simple run test - expecting a message to appear.
+			 - expecting: message == input text
+Maintainer: maintainer@website.com
+"""
+
+# 1. Print out a friendly message
+print "Hello World!"
+
+# 2. Input some text
+some_text = raw_input('Type in some words: ')
+
+# 3. Print out the text we just entered
+print some_text
+
+Errors:
+$ python hello_world.py
+  File "hello_world.py", line 16
+    print "Hello World!
+                      ^
+SyntaxError: EOL while scanning single-quoted string
+
+$ python hello_world.py
+Hello World!
+Type in some words: Some Text
+Traceback (most recent call last):
+  File "hello_world.py", line 22, in <module>
+    print some_text
+NameError: name 'some_text' is not defined
+
+$ python hello_world.py
+  File "hello_world.py", line 19
+    some_text = raw_input (Type in some words: )
+                                            ^
+SyntaxError: invalid syntax
+
+$ python hello_world.py
+  File "hello_world.py", line 18
+    2. Input some text
+    ^
+IndentationError: unexpected indent
+
+$ python
+Python 2.5.2 (r252:60911, May 15 2008, 17:59:19) 
+[GCC 4.3.1 20080501 (prerelease)] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+
+Chapter 03
+
+Listing 3-1. chargen.py
+
+
+"""
+chargen.py
+Problem: Generate a description for a fantasy role-playing character.
+Target Users: Me and my friends
+Target System: GNU/Linux
+Interface: Command-line
+Functional Requirements: Print out the character sheet
+			User must be able to input the character's name, description, gender and race
+Testing: Simple run test 
+Maintainer: maintainer@website.com
+"""
+__version__ = 0.1
+
+Name = ""
+Desc = ""
+Gender = ""
+Race = ""
+
+# Prompt user for user-defined information
+Name = raw_input('What is your Name? ')
+Desc = raw_input('Describe yourself: ')
+Gender = raw_input('What Gender are you? (male / female / unsure): ')
+Race = raw_input('What fantasy Race are you? - (Pixie / Vulcan / Gelfling / Troll): ')
+
+# Output the character sheet
+fancy_line = "<~~==|#|==~~++**\@/**++~~==|#|==~~>"
+print "\n", fancy_line
+print "\t", Name
+print "\t", Race, Gender
+print "\t", Desc
+print fancy_line, "\n"
+
+Listing 3-2. curtains.py
+#! /usr/bin/python
+
+"""
+curtains.py
+Problem: Calculate how much material to buy, given the size of the windows.
+Target Users: My friend who wants to make some curtains
+Target System: GNU/Linux
+Interface: Command-line
+Functional Requirements: Print out the required length of fabric in metres
+				Print out the total price of the fabric
+Other Requirements: User must be able to input the measurements of the window
+Testing: Simple run test 
+Maintainer: maintainer@website.com
+"""
+__version__ = 0.1
+
+# To start with, all the measurements will be in cm
+# Assume that the roll of material is going to be 140cm
+# and that the price per metre will be 5 units of currency
+roll_width = 140
+price_per_metre = 5
+
+# Prompt the user to input the window measurements in cm
+window_height = raw_input('Enter the height of the window (cm): ')
+window_width = raw_input('Enter the width of the window (cm): ')
+
+# Add a bit for the hems
+# First we must convert the raw string into an integer
+# otherwise we will get an error if we try to perform arithmetic on a text string
+curtain_width = (int(window_width) * 0.75) + 20
+curtain_length = int(window_height) + 15
+
+# Work out how many widths of cloth will be needed
+# and figure out the total length of material for each curtain (in cm still)
+widths = curtain_width / roll_width
+total_length = curtain_length * widths
+
+# Actually there are two curtains, so we must double the amount of material
+# and then divide by 10 to get the number of metres	
+total_length = (total_length * 2) / 10
+
+# Finally, work out how much it will cost
+price = total_length * price_per_metre
+
+# And print out the result
+print "You need", total_length, "metres of cloth for ", price
+
+Chapter 04
+
+Listing 4-2. Tracing variables
+
+# print headers for the basic trace table
+print 
+print '\twidth\theight\twidths\ttotal\tprice'
+
+# I need to add a bit for the hems
+# First I must convert the string into a number
+# otherwise I will get an error if I try to perform arithmetic on a text string
+curtain_width = (float(window_width) * 0.75) + 20
+print '\t', curtain_width
+curtain_length = float(window_height) + 15
+print '\t\t', curtain_length
+
+# Now I need to work out how many widths of cloth will be needed
+# and figure out the total length of material for each curtain (in cm still)
+widths = curtain_width / roll_width
+print '\t\t\t', widths
+total_length = curtain_length * widths
+print '\t\t\t\t', total_length
+
+# Actually I have two curtains, so I must double the amount of material
+# and then divide by 10 to get the number of metres	
+total_length = (total_length * 2) / 10
+print '\t\t\t\t', total_length
+
+# Finally I need to work out how much it will cost
+price = total_length * price_per_metre
+print '\t\t\t\t\t', price
+Listing 4-3
+# Actually I have two curtains, so I must double the amount of material
+# and then divide by 100 to get the number of metres	
+total_length = round((total_length * 2) / 100, 2)
+print '\t\t\t\t', total_length
+
+# Finally I need to work out how much it will cost
+price = round(total_length * price_per_metre, 2)
+print '\t\t\t\t\t', price
+Listing 4-4 – curtains-0.2.py
+#! /usr/bin/python
+
+"""
+Calculate how much material to buy, given the size of the windows.
+
+Target Users: My friend who wants to make some curtains
+Target System: GNU/Linux
+Interface: Command-line
+Functional Requirements: Print out the required length of fabric in metres
+				Print out the total price of the fabric
+Other Requirements: User must be able to input the measurements of the window
+Testing: Trace table 
+Test values:  100x100, 100x200, 200x100, 200x200, 200x300 and 300x200
+Expected results: 1.9, 3.4, 4.3, 6.45, 9.8, 9.45
+"""
+__version__ = 0.2
+__maintainer__ = "maintainer@website.com"
+__status__ = "Prototype"
+
+# To start with, all our measurements will be in cm
+# I will assume that the roll of material is going to be 140cm
+# and that the price per metre will be 5 units of currency
+roll_width = 140
+price_per_metre = 5
+
+# Prompt the user to input the window measurements in cm
+window_height = raw_input('Enter the height of the window (cm): ')
+window_width = raw_input('Enter the width of the window (cm): ')
+
+# print headers for our rather basic trace table
+print 
+print '\twidth\theight\twidths\ttotal\tprice\tshorter?\twider?'
+
+# I need to add a bit for the hems
+# First I must convert the raw string into a float  
+# otherwise I will get an error if I try to perform arithmetic on a 
+# text string
+curtain_width = (float(window_width) * 0.75) + 20
+print '\t', curtain_width
+curtain_length = float(window_height) + 15
+print '\t\t', curtain_length
+
+# Now I need to work out how many widths of cloth will be needed
+# and figure out the total length of material for each curtain (in cm still)
+# If the length of the curtains is less than the roll_width, I can turn the
+# whole thing on its side and just use one width of fabric, but if the curtains
+# need to be both longer and wider than the roll_width, then I have a further
+# problem - if the extra material required is less than half the roll_width I
+# would need to buy an additional width of material at the same length; if it is
+# more than half, then I would need to buy two additional widths.
+print '\t\t\t\t\t\t', curtain_length < roll_width
+print '\t\t\t\t\t\t\t', curtain_width > roll_width 
+if curtain_length < roll_width:
+	total_length = round((curtain_width * 2) / 100, 2)
+	print '\t\t\t\t', total_length
+elif curtain_width > roll_width:
+	widths = int(curtain_width/roll_width)
+	extra_material = curtain_width%roll_width
+	if extra_material < (roll_width / 2):
+		widths +=1
+	if extra_material > (roll_width / 2):
+		widths +=2
+	print '\t\t\t', widths
+	total_length = round((curtain_length * widths) / 100, 2)
+	print '\t\t\t\t', total_length
+else:
+	total_length = round((curtain_length * 2) / 100, 2)
+	print '\t\t\t\t', total_length
+
+print '\t\t\t\t', total_length
+
+# Finally I need to work out how much it will cost
+# Rounded to two decimal places using the built-in round() function
+price = round(total_length * price_per_metre, 2)
+print '\t\t\t\t\t', price
+
+# And print out the result
+print "You need", total_length, "metres of cloth, costing: ", price
+Listing 4-5 – looping using a while statement
+loop_counter = 1
+while 2 ** loop_counter < 1000:
+	print 2 ** loop_counter
+	loop_counter += 1
+Listing 4-6 – averages.py
+counter = 1
+total = 0
+number = 0
+while number > -1:
+	number = int(input("Enter a positive number\nor a negative to exit: "))
+	total += number
+	counter += 1
+average = total / counter
+print(average)
+Listing 4-7. Using break and continue
+counter = 0
+sum = 0
+while True:
+    this_input = float(raw_input('#? :~> '))
+    if this_input < 0:
+        if counter == 0:
+            print "You haven't entered any numbers yet!"
+            continue
+        break
+    sum += this_input
+    counter += 1
+    print counter, ':', sum
+Listing 4-8 – Looping using a for statement
+>>> splits = ['Fleagle', 'Beagle', 'Drooper', 'Snorky']
+>>> for banana in splits:
+...     print banana
+... 
+Fleagle
+Beagle
+Drooper
+Snorky
+Listing 4-9 - stringclean.py
+#! /usr/bin/env python
+
+"""Clean up text string, replacing punctuation with spaces.
+
+Target System: GNU/Linux
+Interface: Command-line
+Functional Requirements: 
+	Loop through the characters in a string
+	Removing all non-alpha-numeric characters
+	Lines break at full stops
+	It would be great to have a single space between each word.
+Testing: Trace table 
+Test values: 
+(One long string)*+with various punctuation - like this / this: and a list; of < arithmetic = and comparison symbols> including, dubious? email@addresses and [Stuff \ that] might be ^ Python_code, which `evaluates` as {something|other}~ you don't want. Another sentence. Blah97635o98q6v4ib5uq. test
+Expected results:  
+	One long string with various punctuation like this this and a list of arithmetic and comparison symbols including dubious email addresses and Stuff that might be Python code which evaluates as something other you don't want
+	Another sentence
+	Blah97635o98q6v4ib5uq
+"""
+
+__version__ = "0.1"
+__maintainer__ = "maintainer@website.com"
+__status__ = "Prototype"
+
+
+punctuation = "#()*+,-/:;<=>? \\@^_`{|}~[]"
+output_string = ' '
+space_flagged = False
+input_string = raw_input("Enter a text string: ")
+print
+print "***"
+print
+for char in input_string:
+    if char == '.':
+        print output_string
+        output_string = ' '			
+    elif char not in punctuation:
+        output_string += char
+        space_flagged = False 
+    else:
+        if not space_flagged:
+            output_string += ' '
+            space_flagged = True 
+print output_string
+print
+print "***"
+print	
+
+Chapter 08
+
+Listing 8-3. hello.cgi
+#! /usr/bin/env python
+# -*- coding: UTF8 -*-
+
+"""Simple CGI script
+
+"""
+
+import cgitb
+import time
+
+cgitb.enable()
+now = time.strftime("%A %d %B %Y")
+
+def print_content():
+    print "Content-type: text/html" 
+    print 
+
+def print_header():
+    print """<html>
+	<head>
+	<title>Simple CGI script</title>
+	</head>
+	<body>""" 
+
+def print_footer():
+    print "</body></html>" 
+
+print_content()
+print_header()
+print """<h1>It's %s!</h1>
+<p>Your server is correctly set up to run Python programs.</p>""" % (now) 
+print_footer()
+
+Listing 8-4. form.cgi
+#! /usr/bin/env python
+# -*- coding: Latin-1 -*-
+
+"""CGI form example
+
+"""
+
+import cgi
+import cgitb
+import time
+
+# Enable CGI traceback
+cgitb.enable()
+
+# Create datestamp
+now = time.strftime("%A %d %B %Y")
+
+# Get the contents of the form
+form = cgi.FieldStorage()
+name = form.getvalue('name', 'new user')
+
+def print_content():
+    print "Content-type: text/html"
+    print
+
+def print_header():
+    print """<html>
+	<head>
+	<title>Simple CGI form</title>
+	</head>
+	<body>""" 
+	
+def print_form():
+	print """
+	<form action='form.cgi'>
+	Enter your name: <input type='text' name='name' />
+	<input type='submit' />
+	</form>
+	""" 
+
+def print_footer():
+    print "</body></html>" 
+
+print_content()
+print_header()
+print """<h1>It's %s!</h1>
+<p>Hello %s, your server is correctly set up to run Python programs.</p>""" % (now, name) 
+print_form()
+print_footer()
+
